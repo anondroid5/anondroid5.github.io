@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Presentation">
+<meta name="author" content="anondroid5">
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<!-- Slide Title -->
+<title>BackUp</title>
+<link rel="shortcut icon" href="http://anondroid5.github.io/favicon.ico">
+<link rel="stylesheet" type="text/css" href="http://anondroid5.github.io/assets/themes/twitter/css/1.4.0/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="http://anondroid5.github.io/assets/themes/twitter/css/style.css">
+<link rel="stylesheet" type="text/css" href="http://anondroid5.github.io/reveal.js/css/reveal.min.css">
+<link rel="stylesheet" type="text/css" href="http://anondroid5.github.io/reveal.js/css/normalize.3.0.1.css">
+<link rel="stylesheet" type="text/css" href="http://anondroid5.github.io/reveal.js/css/liquorice.css">
+<link rel="stylesheet" type="text/css" href="http://anondroid5.github.io/highlight.js/styles/xcode.css">
+<link rel="stylesheet" type="text/css" href="http://anondroid5.github.io/reveal.js/css/cleanveal.css" media="screen, projection">
+<!-- For syntax highlighting -->
+<link rel="stylesheet" type="text/css" href="http://anondroid5.github.io/reveal.js/lib/css/zenburn.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+  if( window.location.search.match( /print-pdf/gi ) ) {
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = 'http:\/\/anondroid5.github.io\/reveal.js/css/print/pdf.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+}
+</script>
+<!--[if lt IE 9]>
+<script src="http://anondroid5.github.io/reveal.js/lib/js/html5shiv.js"></script>
+<![endif]-->
+</head>
+<body>
+<!-- navigation bar-->
+<!--
+<div class="topbar">
+  <div class="fill">
+    <div class="container">
+      <a class="brand" href="/">ドロイドさんの機械帝国 | Coding Blog</a>
+      <ul class="nav">
+        <li><a href="/about.html">About</a></li>
+      	<li><a href="/archive.html">Archive</a></li>
+      	<li><a href="/categories.html">Categories</a></li>
+      	<li><a href="/slides.html">Slides</a></li>
+      	<li><a href="/tags.html">Tags</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+-->
+<!-- navigation bar END-->
+<div class="reveal" style="font-family:'Meiryo','メイリオ','MS PGothic','MS Pゴシック',Osaka,sans-serif;">
+  <div class="slides">
+    <section data-markdown data-separator="\n\n" data-vertical="\n\n" data-notes="^Note:">
+<script type="text/template">
+# About Me
+---------
+![anondroid5のアイコン](/images/icon.jpg) <!-- .element: style="position:absolute;right:0px;z-index:-1" -->
+
+ + anondroid5
+ + [@anondroid5](https://twitter.com/anondroid5)
+ + Github: [anondroid5](https://github.com/anondroid5)
+ + 法政大学大学院のM2
+ + Java, Python, JavaScriptあたりを書きます
+
+# Clojure 
+---------
+
+* 2007年から
+* JVMで動くLisp系言語
+* 函数型
+* 動的型付き
+* 値は基本immutable
+* 遅延シーケンス
+* STMがあり、並列処理に強い
+
+
+# Hello World
+-------------
+
+```clojure
+(println "Hello, World")
+```
+<!-- .slide: class="center" -->
+
+# JVM
+------
+## Javaのコードをシームレスに呼べる
+
+* `obj.method()` ではなく `(.method obj)`
+* `Class.staticField` ではなく `Class/staticField`
+* `obj.method1().method2()` ではなく `(.. obj method1 method2)`
+
+
+# JVM
+-----
+
+```clojure
+(.println System/out "Hello JVM")
+```
+
+```clojure
+(Math/random)
+```
+<!-- .slide: class="center" -->
+
+
+# Immutable
+-----------
+
+* 状態を持たないのでコードの見通しが良い
+  + 並列で考える時には重要
+  + 複雑さだけでなく不整合などバグの原因になりやすい
+* 変更可能な値もある
+  + それらはトランザクション内でのみ変更可能
+  + 不整合が起きない
+
+
+# 函数型
+--------
+
+```clojure
+(filter odd? (map #(+ 1 %) '(1 2 3)))
+```
+<!-- .slide: class="center" -->
+
+
+# 遅延シーケンス
+---------------
+
+```clojure
+(def natural_number (iterate inc 1))
+(take 5 natural_number) ;=> (1 2 3 4 5)
+```
+<!-- .slide: class="center" -->
+
+
+# リスト内包表記
+----------------
+
+```clojure
+(for [x (range 5)] (* x x))
+;=> (1 4 9 16 25)
+```
+
+<!-- .slide: class="center" -->
+
+
+#並列処理に強い
+---------------
+
+* 簡単にはJavaのスレッドを呼べばいい
+  + Clojureの関数は全てCallableでRunnablea
+
+```clojure
+(.start (Thread. (fn [] 
+                   (Thread/sleep 1000)
+                   (println 'foo))))
+```
+
+
+#並列処理に強い
+---------------
+## core.async
+
+* goroutineとgochannelが使える
+
+
+## core.async
+-------------
+
+```clojure
+(require '[clojure.core.async :as async :refer :all])
+(let [c (chan)]
+  (go (>! c "hello"))
+  (assert (= "hello" (<!! (go (<! c)))))
+  (close! c))
+```
+
+```clojure
+(require '[clojure.core.async :as async :refer :all])
+(let [c (chan)]
+  (thread (>!! c "hello"))
+  (assert (= "hello" (<!! c)))
+  (close! c))
+```
+<!-- .slide: class="center" -->
+
+
+# 今回紹介し切れなかったの
+-------------------------
+
+* マクロ
+* メタデータ
+* protocolとかの多態性
+* ClojureScript/Om
+* Typed Clojure
+
+
+# まとめ
+--------
+
+* Clojureを使えばJavaが使える
+* Clojureを使えばPythonのリスト内包表記が使える
+* Clojureを使えばGoのgoroutine/gochannelが使える
+
+
+
+<span style="font-size:180%;">ご清聴ありがとうございました</span>
+<!-- .slide: class="center" -->
+
+</script>
+</section>
+  </div>
+</div>
+<script src="http://anondroid5.github.io/reveal.js/lib/js/head.min.js"></script>
+<script src="http://anondroid5.github.io/reveal.js/js/reveal.min.js"></script>
+<script>
+  Reveal.initialize({
+    controls: true,
+    progress: true,
+    history: false,
+    center: true,
+    slideNumber: true,
+    transition: 'none', // none/fade/slide/convex/concave/zoom
+    dependencies: [
+      { src: 'http:\/\/anondroid5.github.io\/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'http:\/\/anondroid5.github.io\/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'http:\/\/anondroid5.github.io\/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'http:\/\/anondroid5.github.io\/highlight.js/highlight.min.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'http:\/\/anondroid5.github.io\/reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      { src: 'http:\/\/anondroid5.github.io\/reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+      { src: 'http:\/\/anondroid5.github.io\/reveal.js/plugin/math/math.js', async: true }
+    ]
+  });
+</script>
+</body>
+</html>

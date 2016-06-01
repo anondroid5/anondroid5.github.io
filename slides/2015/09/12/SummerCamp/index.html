@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="description" content="Presentation">
+<meta name="author" content="anondroid5">
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<!-- Slide Title -->
+<title>Summer Camp</title>
+<link rel="shortcut icon" href="http://anondroid5.github.io/favicon.ico">
+<link rel="stylesheet" type="text/css" href="http://anondroid5.github.io/assets/themes/twitter/css/1.4.0/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="http://anondroid5.github.io/assets/themes/twitter/css/style.css">
+<link rel="stylesheet" type="text/css" href="http://anondroid5.github.io/reveal.js/css/reveal.min.css">
+<link rel="stylesheet" type="text/css" href="http://anondroid5.github.io/reveal.js/css/normalize.3.0.1.css">
+<link rel="stylesheet" type="text/css" href="http://anondroid5.github.io/reveal.js/css/liquorice.css">
+<link rel="stylesheet" type="text/css" href="http://anondroid5.github.io/highlight.js/styles/xcode.css">
+<link rel="stylesheet" type="text/css" href="http://anondroid5.github.io/reveal.js/css/cleanveal.css" media="screen, projection">
+<!-- For syntax highlighting -->
+<link rel="stylesheet" type="text/css" href="http://anondroid5.github.io/reveal.js/lib/css/zenburn.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+  if( window.location.search.match( /print-pdf/gi ) ) {
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = 'http:\/\/anondroid5.github.io\/reveal.js/css/print/pdf.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+}
+</script>
+<!--[if lt IE 9]>
+<script src="http://anondroid5.github.io/reveal.js/lib/js/html5shiv.js"></script>
+<![endif]-->
+</head>
+<body>
+<!-- navigation bar-->
+<!--
+<div class="topbar">
+  <div class="fill">
+    <div class="container">
+      <a class="brand" href="/">ドロイドさんの機械帝国 | Coding Blog</a>
+      <ul class="nav">
+        <li><a href="/about.html">About</a></li>
+      	<li><a href="/archive.html">Archive</a></li>
+      	<li><a href="/categories.html">Categories</a></li>
+      	<li><a href="/slides.html">Slides</a></li>
+      	<li><a href="/tags.html">Tags</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+-->
+<!-- navigation bar END-->
+<div class="reveal" style="font-family:'Meiryo','メイリオ','MS PGothic','MS Pゴシック',Osaka,sans-serif;">
+  <div class="slides">
+    <section data-markdown data-separator="\n\n" data-vertical="\n\n" data-notes="^Note:">
+<script type="text/template">
+# バースト検出と良い実況者に基づく<!-- .element: style="font-size:60px" -->
+リアルタイム状況要約手法<!-- .element: style="font-size:60px" -->
+----------------------
+法政大学大学院  理工学研究科  応用情報工学専攻  
+ネットワーク応用研究室  
+博士前期課程2年  赤木 文彦
+<!-- .slide: class="center" -->
+
+# 目次<!-- .element: style="font-size:60px" -->
+----------------------
+
++ 研究概要
++ 研究目的
++ 研究内容
++ 今後の課題
+
+# 研究概要<!-- .element: style="font-size:60px" -->
+----------------------
+
+Twitterのようなマイクロブログに対しての最新の投稿は
+人々が何をし、何を見ているのかに関する情報を含んでいる
+
+本稿では、時々刻々と変化する特定の出来事に対する投稿を用いて
+要約の生成を行うため、バーストと呼ばれる現象を解析する
+
+# 研究目的<!-- .element: style="font-size:60px" -->
+----------------------
+
+本研究では、Twitterに対して投稿された
+FIFAワールドカップの試合を要約することで、
+リアルタイムな状況要約を生成するシステムの実現を目指す
+
+# 研究内容<!-- .element: style="font-size:60px" -->
+----------------------
+
+# 要約システムのイメージ <!-- .element: style="font-size:50px" -->
+----------------------
+提案するシステムは、バースト検出と要約生成から成る
+![001](http://anondroid5.github.io/images/slides/2015-09-12-SummerCamp/001.jpg) <!-- .element: style="width:900px" -->
+<!-- .slide: class="center" -->
+
+# データセット <!-- .element: style="font-size:50px" -->
+----------------------
+Twitter Streaming APIを用いて，#soccer, #daihyo，#jfaなどハッシュタグを使用して収集したFIFAワールドカップの日本代表選の試合時間内の16,9687件を対象とする
+
+
++ 2014年6月15日,コートジボワール戦:4342(件),2564(人)
++ 2014年6月20日,ギリシャ戦:9,7185(件),19700(人)
++ 2014年6月25日,コロンビア戦:6,8160(件),9190(人)
+
+# 日本 vs ギリシャ <!-- .element: style="font-size:50px" -->
+----------------------
+最も投稿数の多いギリシャ戦のグラフを以下に示す
+![002](http://anondroid5.github.io/images/slides/2015-09-12-SummerCamp/002.jpg) <!-- .element: style="width:900px" -->
+<!-- .slide: class="center" -->
+
+# 1)バースト検出 <!-- .element: style="font-size:50px" -->
+----------------------
+![003](http://anondroid5.github.io/images/slides/2015-09-12-SummerCamp/003.jpg) <!-- .element: style="width:900px" -->
+<!-- .slide: class="center" -->
+
+# 各セルのデータ(レベル0) <!-- .element: style="font-size:50px" -->
+----------------------
+![004](http://anondroid5.github.io/images/slides/2015-09-12-SummerCamp/004.jpg) <!-- .element: style="width:900px" -->
+<!-- .slide: class="center" -->
+
+# 平均到着間隔 <!-- .element: style="font-size:50px" -->
+----------------------
+![005](http://anondroid5.github.io/images/slides/2015-09-12-SummerCamp/005.jpg) <!-- .element: style="width:900px" -->
+<!-- .slide: class="center" -->
+
+# 平均到着間隔のイメージ <!-- .element: style="font-size:50px" -->
+----------------------
+![006](http://anondroid5.github.io/images/slides/2015-09-12-SummerCamp/006.jpg) <!-- .element: style="width:900px" -->
+<!-- .slide: class="center" -->
+
+# バースト判定条件 <!-- .element: style="font-size:50px" -->
+----------------------
+![007](http://anondroid5.github.io/images/slides/2015-09-12-SummerCamp/007.jpg) <!-- .element: style="width:900px" -->
+<!-- .slide: class="center" -->
+
+# バースト判定結果 <!-- .element: style="font-size:50px" -->
+----------------------
+ギリシャ戦に対するバースト解析結果を以下に示す
+![008](http://anondroid5.github.io/images/slides/2015-09-12-SummerCamp/008.jpg) <!-- .element: style="width:900px" -->
+<!-- .slide: class="center" -->
+
+# 2)要約生成 <!-- .element: style="font-size:50px" -->
+----------------------
+久保らは、誰が何をしたのかを具体的に示すようなtweetをするユーザは"良い実況者"であるとしたバースト解析技術を用いた要約システムの定式化を行っている
+<!-- .slide: class="center" -->
+
+![009](http://anondroid5.github.io/images/slides/2015-09-12-SummerCamp/009.jpg) <!-- .element: style="width:900px" -->
+<!-- .slide: class="center" -->
+
+# 速報として最適なtweetユーザ <!-- .element: style="font-size:50px" -->
+----------------------
+![010](http://anondroid5.github.io/images/slides/2015-09-12-SummerCamp/010.jpg) <!-- .element: style="width:900px" -->
+<!-- .slide: class="center" -->
+
+# 要約としての"良い実況tweet"スコア <!-- .element: style="font-size:50px" -->
+----------------------
+![011](http://anondroid5.github.io/images/slides/2015-09-12-SummerCamp/011.jpg) <!-- .element: style="width:900px" -->
+<!-- .slide: class="center" -->
+
+# 評価指標 <!-- .element: style="font-size:50px" -->
+----------------------
+Twitterから要約を生成する際の評価指標として、高村らの提案する修正版ROUGE-1を使用する
+Twitterから生成された要約の正解要約にyahooの提供するスポーツナビを用いる
+![012](http://anondroid5.github.io/images/slides/2015-09-12-SummerCamp/012.jpg) <!-- .element: style="width:900px" -->
+<!-- .slide: class="center" -->
+
+# 今後の課題 <!-- .element: style="font-size:50px" -->
+----------------------
+リアルタイムバースト検出のプログラムが完成しているので、今後の方針として文書要約生成の定式化を行うとともに、2015年カナダ開催FIFA女子ワールドカップのデータセットに範囲を広げて解析を試みていこうと考えている
+
+<!-- .slide: class="center" -->
+
+<span style="font-size:180%;">ご清聴ありがとうございました</span>
+<!-- .slide: class="center" -->
+
+</script>
+</section>
+  </div>
+</div>
+<script src="http://anondroid5.github.io/reveal.js/lib/js/head.min.js"></script>
+<script src="http://anondroid5.github.io/reveal.js/js/reveal.min.js"></script>
+<script>
+  Reveal.initialize({
+    controls: true,
+    progress: true,
+    history: false,
+    center: true,
+    slideNumber: true,
+    transition: 'none', // none/fade/slide/convex/concave/zoom
+    dependencies: [
+      { src: 'http:\/\/anondroid5.github.io\/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'http:\/\/anondroid5.github.io\/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'http:\/\/anondroid5.github.io\/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'http:\/\/anondroid5.github.io\/highlight.js/highlight.min.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'http:\/\/anondroid5.github.io\/reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      { src: 'http:\/\/anondroid5.github.io\/reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+      { src: 'http:\/\/anondroid5.github.io\/reveal.js/plugin/math/math.js', async: true }
+    ]
+  });
+</script>
+</body>
+</html>
